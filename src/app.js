@@ -9,5 +9,6 @@ app.set('models', sequelize.models)
 app.use(pino)
 
 app.use('/contracts', require('./routes/contracts'))
+app.use('/jobs', require('./routes/jobs'))
 
 module.exports = app;
