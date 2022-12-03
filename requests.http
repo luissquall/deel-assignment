@@ -92,3 +92,41 @@ profile_id: 1
 {
     "amount": 200
 }
+
+# Deposits
+
+###
+
+# You can’t deposit more than 25% your total of jobs to pay
+
+POST http://127.0.0.1:3001/balances/deposit/1
+Content-Type: application/json
+profile_id: 1
+
+{
+    "amount": 800
+}
+
+###
+
+# Client not found
+
+POST http://127.0.0.1:3001/balances/deposit/7
+Content-Type: application/json
+profile_id: 1
+
+{
+    "amount": 2
+}
+
+###
+
+# Successful deposit
+
+POST http://127.0.0.1:3001/balances/deposit/1
+Content-Type: application/json
+profile_id: 1
+
+{
+    "amount": 2
+}
