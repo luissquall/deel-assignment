@@ -19,3 +19,76 @@ profile_id: 1
 ###
 GET http://127.0.0.1:3001/jobs/unpaid
 profile_id: 1
+
+###
+
+# This user should not be allowed to pay
+
+POST http://127.0.0.1:3001/jobs/1/pay
+Content-Type: application/json
+profile_id: 7
+
+{
+    "amount": 100
+}
+
+###
+
+# This job has been already paid
+
+POST http://127.0.0.1:3001/jobs/6/pay
+Content-Type: application/json
+profile_id: 4
+
+{
+    "amount": 100
+}
+
+###
+
+# You are not allowed to pay for this job
+
+POST http://127.0.0.1:3001/jobs/5/pay
+Content-Type: application/json
+profile_id: 3
+
+{
+    "amount": 100
+}
+
+###
+
+# Your amount should be the same as the job price
+
+POST http://127.0.0.1:3001/jobs/5/pay
+Content-Type: application/json
+profile_id: 4
+
+{
+    "amount": 100
+}
+
+###
+
+# Insufficient funds
+
+POST http://127.0.0.1:3001/jobs/5/pay
+Content-Type: application/json
+profile_id: 4
+
+{
+    "amount": 200
+}
+
+
+###
+
+# Successful payment
+
+POST http://127.0.0.1:3001/jobs/1/pay
+Content-Type: application/json
+profile_id: 1
+
+{
+    "amount": 200
+}
