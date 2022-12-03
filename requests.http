@@ -9,3 +9,7 @@ profile_id: 2
 ###
 GET {{service}}/contracts/3
 profile_id: 4
+
+###
+GET http://127.0.0.1:3001/contracts
+profile_id: 1
