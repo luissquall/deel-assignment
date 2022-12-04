@@ -124,3 +124,11 @@ When you have finished the assignment, create a github repository and send us th
   
 
 Thank you and good luck! 🙏
+
+## Improvements
+
+- Pagination
+- Better JSDoc documentation
+- Add a different auth strategy for admins
+- Response format: { data }
+- Unit tests. To focus on the solution I used the `requests.http` file to test the results
