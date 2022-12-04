@@ -130,3 +130,19 @@ profile_id: 1
 {
     "amount": 2
 }
+
+# Admin
+
+###
+
+# Best clients
+
+GET {{service}}/admin/best-clients?start=2020-08-15&end=2020-08-16&limit=10
+profile_id: 1
+
+###
+
+# Best clients, lower limit only
+
+GET {{service}}/admin/best-clients?start=2020-08-15
+profile_id: 1
