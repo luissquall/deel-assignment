@@ -5,6 +5,79 @@ const { Op } = require('sequelize')
 const { query, validationResult } = require('express-validator');
 
 /**
+ * Returns the profession that earned the most money (sum of jobs paid)
+ * for any contactor that worked in the query time range
+ *
+ * @returns profession
+ */
+router.get(
+    '/best-profession',
+    query('start').optional().isDate(),
+    query('end').optional().isDate(),
+    getProfile,
+    async (req, res) => {
+        const sequelize = require('sequelize');
+        const { Job, Contract, Profile } = req.app.get('models')
+        const start = req.query.start;
+        const end = req.query.end;
+        const where = {
+            paid: true,
+        };
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        if (start) {
+            where.paymentDate = {
+                [Op.gte]: `${start}T00:00Z`
+            };
+        }
+        if (end) {
+            let date = new Date(end);
+
+            date.setDate(date.getDate() + 1)
+
+            where.paymentDate = where.paymentDate ?? {};
+            where.paymentDate[Op.lt] = date.toISOString();
+        }
+
+        const jobs = await Job.findAll({
+            attributes: {
+                include: [
+                    [sequelize.fn('SUM', sequelize.col('price')), 'total']
+                ]
+            },
+            where,
+            include: [
+                {
+                    model: Contract,
+                    required: true,
+                    include: [
+                        {
+                            model: Profile,
+                            as: 'Contractor'
+                        }
+                    ]
+                }
+            ],
+            group: sequelize.col('Contract.Contractor.type'),
+            group: 'Contract.Contractor.profession',
+            order: [
+                ['total', 'DESC']
+            ],
+            limit: 1
+        })
+        const result = {
+            name: jobs[0].Contract.Contractor.profession
+        }
+
+        res.json(result)
+    }
+)
+
+/**
  * Returns that clients the paid the most for jobs in the query time period
  *
  * @returns clients
